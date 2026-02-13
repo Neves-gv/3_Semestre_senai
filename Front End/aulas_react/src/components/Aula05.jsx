@@ -1,5 +1,5 @@
 import { estilos } from '../style/Estilos.jsx';
-import Aula05_Execicios from './Aula05_Exercicios.jsx';
+import Aula05_Exercicios from './Aula05_Exercicios.jsx';
 
 export const Aula05 = () => {
     const botaoClique = () => {
@@ -58,7 +58,7 @@ export const Aula05 = () => {
             <input type="text" onKeyDown={(envet) => alert(envet.key)} />
             <input type="text" onKeyDown={alterarcor} placeholder='a - azul, w - verde, d - roxo,s - cinza' />
             <hr />
-            <Aula05_Execicios />
+            <Aula05_Exercicios />
         </div>
     )
 }

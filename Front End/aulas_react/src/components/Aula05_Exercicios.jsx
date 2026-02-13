@@ -1,6 +1,6 @@
 import { estilos } from '../style/Estilos.jsx';
 
-export const Aula05_Execicios = () => {
+export const Aula05_Exercicios = () => {
 
     const botaoClique = () => alert('Sim');
     const botaoClique2 = () => alert('Não');
@@ -54,3 +54,4 @@ export const Aula05_Execicios = () => {
         </div>
     );
 };
+export default Aula05_Exercicios;

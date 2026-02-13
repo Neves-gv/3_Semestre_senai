@@ -1,6 +1,6 @@
 /** @type {{ [key: string]: import('react').CSSProperties }} */
 const Aula03_Login = () => {
-    return(
+    return (
         <div style={Estilos.container}>
             <div style={Estilos.card}>
                 <img style={Estilos.card} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEmhaEK0AahY6v7bsr8h61jxmKMol_EbpZag&s" alt="" />
@@ -8,11 +8,11 @@ const Aula03_Login = () => {
                 <h1 style={Estilos.titulo}>Login</h1>
                 <br />
                 <div>Usuario</div>
-                <input type="text" Usuario/>
+                <input type="text" Usuario />
                 <br />
                 <div>Senha</div>
                 <br />
-                <input type="text" Usuario/>
+                <input type="text" Usuario />
                 <br />
                 <button style={Estilos.botao}>Cadastra-se</button>
                 <br />
