@@ -6,6 +6,7 @@ import {estilos} from './style/Estilos.jsx';
 import Aula04 from "./components/Aula04.jsx";
 import Aula05 from "./components/Aula05.jsx";
 import Aula06 from "./components/Aula06.jsx";
+import Aula07 from "./components/Aula07.jsx";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Aula04 />
           <Aula05 />
           <Aula06 />
+          <Aula07 />
         </div>
       </main>
     </div>
