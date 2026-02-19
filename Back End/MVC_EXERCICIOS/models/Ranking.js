@@ -8,11 +8,9 @@ class Ranking {
         this.pontuacao = Number(pontuacao);
         this.nivel = this.verificarPontuacao();
     }
-
     descricao() {
         return `${this.nome} (ID: ${this.id})`;
     }
-
     verificarPontuacao() {
         if (this.pontuacao <= 100) return 'Iniciante';
         if (this.pontuacao <= 200) return 'Intermediário';
@@ -25,5 +23,4 @@ class Ranking {
         this.nivel = this.verificarPontuacao();
     }
 }
-
 export default Ranking;
