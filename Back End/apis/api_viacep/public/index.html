@@ -16,8 +16,9 @@
         async function carregarImagem() {
             const id = document.getElementById('id').value;
             const resposta = await fetch(`/dog/${id}`);
-            const  dados = await resposta.json;
-            document.getElementById('dog').src = resposta.url
+            const  dados = await resposta.json()
+            
+            document.getElementById('dog').src = dados.url
         }
     </script>
 </body>

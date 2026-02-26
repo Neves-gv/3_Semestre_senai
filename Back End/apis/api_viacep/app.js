@@ -42,7 +42,7 @@ app.get('/starwars/personagem/:id', async (req, res) => {
 
 app.get('/dog/:id', async(req, res) => {
     const {id} = req.params;
-    const url = await fetch(`https://http.dog/${id}.jpg`);
+    const url = `https://http.dog/${id}.json`
 
     res.json({url});
 
