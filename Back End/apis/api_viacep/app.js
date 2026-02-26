@@ -5,7 +5,7 @@ const app = express();
 app.use('/dogs', express.static('public'))
 // CRIAÇÃO DO PRIMEIRO END POINT
 app.get('/', async (req, res) => {
-    res.json("API Funcionando");
+    res.status(200).json("API Funcionando");
 });
 
 // CRIANDO NOVO ENDPOINT PARA CONSUMIR DADOS DA API VIACEP
@@ -37,7 +37,7 @@ app.get('/starwars/personagem/:id', async (req, res) => {
         cor_olhos: dados.eye_color
     }
 
-    res.json(resultado);
+    res.status(201).json(resultado);
 });
 
 app.get('/dog/:id', async(req, res) => {
