@@ -1,8 +1,9 @@
 import { estilos } from '../style/estilos';
 import { useState } from "react";
-import Aula07_perfil from './Aula07_perfil';
+import Aula07_Perfil from './Aula07_Perfil';
 import Aula09_Numero from './Aula09_Numero';
-import Aula09_ListaNomes from './Aula09_ListaNomes';
+import Aula09_ListaNomes from './Aula09_Lista_Nome';
+import Aula09_Teste from './Aula09_ListaNomes2(testemeu)';
 
 const Aula09 = () => {
 
@@ -28,10 +29,9 @@ const Aula09 = () => {
         setNumerosSorteados([...numerosSorteados, novoNumero]);
     }
 
-    function botaoExcluir(nr){
-        // Remove todos os números iguais ao clicado
-        const novosnumeros = numerosSorteados.filter((numero) => numero !== nr);
-        setNumerosSorteados(novosnumeros);
+    function botaoExcluir(nr) {
+        const novosNumeros = numerosSorteados.filter((numero) => numero !== nr);
+        setNumerosSorteados(novosNumeros);
     }
 
     return (
@@ -50,7 +50,6 @@ const Aula09 = () => {
                 <Aula09_Numero 
                     key={index} 
                     numero={numero} 
-                    // A correção está nesta linha abaixo:
                     excluir={() => botaoExcluir(numero)} 
                 />
             ))}
@@ -60,7 +59,7 @@ const Aula09 = () => {
             <h3>Lista de Perfis</h3>
 
             {listaPerfil.map((perfil, index) => (
-                <Aula07_perfil
+                <Aula07_Perfil
                     key={index}
                     nome={perfil.nome}
                     foto={perfil.foto}
@@ -69,6 +68,7 @@ const Aula09 = () => {
 
             <hr />
             <Aula09_ListaNomes />
+            <Aula09_Teste />
         </div>
     );
 }

@@ -8,7 +8,9 @@ import Aula05 from "./components/Aula05.jsx";
 import Aula06 from "./components/Aula06.jsx";
 import Aula07 from "./components/Aula07.jsx";
 import Aula08 from "./components/Aula08.jsx";
-import Aula09 from "./components/Aula09.jsx"
+import Aula09 from "./components/Aula09.jsx";
+import Aula10 from "./components/Aula10.jsx";
+import Aula11 from "./components/Aula11.jsx";
 
 const App = () => {
   return (
@@ -27,6 +29,8 @@ const App = () => {
           <Aula07 />
           <Aula08 />
           <Aula09 />
+          <Aula10 />
+          <Aula11 />
         </div>
       </main>
     </div>

@@ -1,22 +1,31 @@
-import { poll } from 'pg';
+import { Pool } from 'pg';
 
-const BD = new poll({
+const BD = new Pool({
     user: 'postgres',
-    host: 'db.mmgkhiirbhbqkumpqydw.supabase.co',
-    database: 'postgres',
-    port: '5432',
-    password: 'bancodedadossenai'
-})
+    host: 'localhost',
+    database: 'bd_ordem_servicos',
+    port: 5432,
+    password: 'admin',
+});
 
-const testarConexao = async () =>{
-    try{
-        const cliente = await BD.connect()
-        console.log('Conexão realizada com sucesso!');
-        cliente.release(); //Liberar conxão
-    }
-    catch(error){
-        console.error('Erro ao conectar ao banco de dados', error.message)
-    }
-}
+// SUPABASE (caso queira usar depois)
+// const BD = new Pool({
+//     user: 'postgres',
+//     host: 'db.dppcptaztnzswtyqoovn.supabase.co',
+//     database: 'postgres',
+//     port: 5432,
+//     password: 'bancodedadossenai',
+//     ssl: { rejectUnauthorized: false }
+// });
 
-export {BD, testarConexao};
+const testarConexao = async () => {
+    try {
+        const cliente = await BD.connect();
+        console.log('Conexão com PostgreSQL realizada com sucesso ✅');
+        cliente.release();
+    } catch (error) {
+        console.error('Erro ao conectar ao banco:', error.message);
+    }
+};
+
+export { BD, testarConexao };
