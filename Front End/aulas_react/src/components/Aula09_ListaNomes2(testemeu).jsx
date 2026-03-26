@@ -26,7 +26,7 @@ const Aula09_ListaNomes = () => {
         <div style={localEstilos.container}>
             <div style={localEstilos.card}>
                 <h1 style={localEstilos.titulo}>
-                     Lista de Presença do Churrasco
+                    Lista de Presença do Churrasco
                 </h1>
 
                 <div style={localEstilos.inputsContainer}>
@@ -45,15 +45,15 @@ const Aula09_ListaNomes = () => {
                 </div>
 
                 <div style={localEstilos.botoesContainer}>
-                    <button 
-                        style={{...localEstilos.botao, ...localEstilos.botaoAdicionar}} 
+                    <button
+                        style={{ ...localEstilos.botao, ...localEstilos.botaoAdicionar }}
                         onClick={botaoAdicionar}
                     >
                         Adicionar
                     </button>
 
-                    <button 
-                        style={{...localEstilos.botao, ...localEstilos.botaoLimpar}} 
+                    <button
+                        style={{ ...localEstilos.botao, ...localEstilos.botaoLimpar }}
                         onClick={limparLista}
                     >
                         Limpar Tudo
@@ -69,7 +69,7 @@ const Aula09_ListaNomes = () => {
                         </span>
 
                         <button
-                            style={{...localEstilos.botao, ...localEstilos.botaoExcluir}}
+                            style={{ ...localEstilos.botao, ...localEstilos.botaoExcluir }}
                             onClick={() => botaoExcluir(index)}
                         >
                             Excluir
@@ -78,8 +78,8 @@ const Aula09_ListaNomes = () => {
                 ))}
 
                 {listaPresenca.length > 0 && (
-                    <button 
-                        style={{...localEstilos.botao, ...localEstilos.botaoLimparLista}}
+                    <button
+                        style={{ ...localEstilos.botao, ...localEstilos.botaoLimparLista }}
                         onClick={limparLista}
                     >
                         Limpar Lista

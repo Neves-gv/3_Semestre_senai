@@ -3,74 +3,202 @@ import { BD } from '../../db.js';
 
 const router = Router();
 
-// Endpoint para listar todos os departamentos
-router.get('/DEPARTAMENTOS', async (req, res) => {
-    try {
-        const query = `SELECT * FROM DEPARTAMENTOS ORDER BY id_departamento`;
-        const resultado = await BD.query(query);
 
+// =========================
+// DEPARTAMENTOS
+// =========================
+
+// LISTAR
+router.get('/departamentos', async (req, res) => {
+    try {
+        const resultado = await BD.query(
+            `SELECT * FROM departamentos ORDER BY id_departamento`
+        );
         res.status(200).json(resultado.rows);
     } catch (error) {
-        console.error('Erro ao listar Departamentos:', error.message);
-        res.status(500).json({ erro: 'Erro ao listar Departamentos' });
+        console.error(error);
+        res.status(500).json({ erro: 'Erro ao listar departamentos' });
     }
 });
 
-// Listar todos os departamentos
-// router.get('/departamentos', async (req, res) => {
-//     try {
-//         const query = `SELECT * FROM departamentos ORDER BY id_departamento`;
-//         const resultado = await BD.query(query);
-//         res.status(200).json(resultado.rows);
-//     } catch (error) {
-//         console.error('Erro ao listar departamentos:', error.message);
-//         res.status(500).json({ erro: 'Erro ao listar departamentos' });
-//     }
-// });
-
-// Cadastrar um novo departamento
+// CRIAR
 router.post('/departamentos', async (req, res) => {
     const { nome, descricao } = req.body;
 
     if (!nome) {
-        return res.status(400).json({ erro: 'O campo nome é obrigatório' });
+        return res.status(400).json({ erro: 'Nome é obrigatório' });
     }
 
     try {
-        const comando = `INSERT INTO departamentos(nome, descricao) VALUES($1, $2)`;
-        const valores = [nome, descricao];
-        await BD.query(comando, valores);
-        res.status(201).json({ mensagem: 'Departamento cadastrado com sucesso!' });
+        const resultado = await BD.query(
+            `INSERT INTO departamentos (nome, descricao)
+             VALUES ($1, $2)
+             RETURNING *`,
+            [nome, descricao]
+        );
+
+        res.status(201).json(resultado.rows[0]);
     } catch (error) {
-        console.error('Erro ao cadastrar departamento:', error.message);
-        res.status(500).json({ erro: 'Erro interno ao cadastrar departamento' });
+        console.error(error);
+        res.status(500).json({ erro: 'Erro ao cadastrar departamento' });
     }
 });
 
-// Atualizar um departamento existente
-router.put('/departamentos/:id_departamento', async (req, res) => {
-    const { id_departamento } = req.params;
+// ATUALIZAR
+router.put('/departamentos/:id', async (req, res) => {
+    const { id } = req.params;
     const { nome, descricao } = req.body;
 
     if (!nome) {
-        return res.status(400).json({ erro: 'O campo nome é obrigatório' });
+        return res.status(400).json({ erro: 'Nome é obrigatório' });
     }
 
     try {
-        const verificar = await BD.query(`SELECT * FROM departamentos WHERE id_departamento = $1`, [id_departamento]);
-        
-        if (verificar.rowCount === 0) {
+        const existe = await BD.query(
+            `SELECT * FROM departamentos WHERE id_departamento = $1`,
+            [id]
+        );
+
+        if (existe.rowCount === 0) {
             return res.status(404).json({ erro: 'Departamento não encontrado' });
         }
 
-        const comando = `UPDATE departamentos SET nome = $1, descricao = $2 WHERE id_departamento = $3`;
-        const valores = [nome, descricao, id_departamento];
-        await BD.query(comando, valores);
+        const resultado = await BD.query(
+            `UPDATE departamentos
+             SET nome = $1, descricao = $2
+             WHERE id_departamento = $3
+             RETURNING *`,
+            [nome, descricao, id]
+        );
 
-        return res.status(200).json({ mensagem: 'Departamento atualizado com sucesso!' });
+        res.status(200).json(resultado.rows[0]);
     } catch (error) {
-        console.error('Erro ao atualizar departamento:', error.message);
-        return res.status(500).json({ erro: 'Erro interno ao atualizar departamento' });
+        console.error(error);
+        res.status(500).json({ erro: 'Erro ao atualizar departamento' });
+    }
+});
+
+// DELETAR
+router.delete('/departamentos/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const resultado = await BD.query(
+            `DELETE FROM departamentos
+             WHERE id_departamento = $1
+             RETURNING *`,
+            [id]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({ erro: 'Departamento não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Departamento removido' });
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro ao deletar departamento' });
+    }
+});
+
+
+// =========================
+// USUÁRIOS
+// =========================
+
+// ATUALIZAÇÃO COMPLETA
+router.put('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome, email, senha } = req.body;
+
+    if (!nome || !email || !senha) {
+        return res.status(400).json({ erro: 'Preencha todos os campos' });
+    }
+
+    try {
+        const resultado = await BD.query(
+            `UPDATE usuarios
+             SET nome=$1, email=$2, senha=$3
+             WHERE id_usuario=$4
+             RETURNING *`,
+            [nome, email, senha, id]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({ erro: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(resultado.rows[0]);
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro ao atualizar usuário' });
+    }
+});
+
+// ATUALIZAÇÃO PARCIAL
+router.patch('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+    const { nome, email, senha } = req.body;
+
+    try {
+        const campos = [];
+        const valores = [];
+        let i = 1;
+
+        if (nome !== undefined) {
+            campos.push(`nome = $${i++}`);
+            valores.push(nome);
+        }
+        if (email !== undefined) {
+            campos.push(`email = $${i++}`);
+            valores.push(email);
+        }
+        if (senha !== undefined) {
+            campos.push(`senha = $${i++}`);
+            valores.push(senha);
+        }
+
+        if (campos.length === 0) {
+            return res.status(400).json({ erro: 'Nenhum campo enviado' });
+        }
+
+        valores.push(id);
+
+        const resultado = await BD.query(
+            `UPDATE usuarios
+             SET ${campos.join(', ')}
+             WHERE id_usuario = $${i}
+             RETURNING *`,
+            valores
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({ erro: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json(resultado.rows[0]);
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro ao atualizar usuário' });
+    }
+});
+
+// DELETAR
+router.delete('/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const resultado = await BD.query(
+            `DELETE FROM usuarios
+            WHERE id_usuario = $1
+             RETURNING *`,
+            [id]
+        );
+
+        if (resultado.rowCount === 0) {
+            return res.status(404).json({ erro: 'Usuário não encontrado' });
+        }
+
+        res.status(200).json({ mensagem: 'Usuário removido' });
+    } catch (error) {
+        res.status(500).json({ erro: 'Erro ao deletar usuário' });
     }
 });
 

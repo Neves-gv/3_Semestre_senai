@@ -1,174 +1,377 @@
 const documentacao = {
     openapi: '3.0.3',
     info: {
-        title: 'API ordem de servicos',
-        description: 'Documentação da API de ordens de serviços',
-        version: '1.0.0',
+        title: 'API ordem de serviços',
+        version: '1.0.0'
     },
+
     servers: [
         {
-            url: 'http://localhost:3000',
-        },
+            url: 'http://localhost:3000'
+        }
     ],
-    tags: [
-        { name: 'Usuarios', description: 'Operações relacionadas aos usuários' },
-        { name: 'Departamentos', description: 'Operações relacionadas aos departamentos' },
-        { name: 'Ordens de Serviços', description: 'Operações relacionadas às ordens de serviços' },
-    ],
+
     paths: {
+
+        // =========================
+        // USUÁRIOS
+        // =========================
+
         '/usuarios': {
             get: {
-                tags: ['Usuarios'],
+                tags: ['Usuários'],
                 summary: 'Listar usuários',
                 responses: {
-                    200: {
-                        description: 'Dados obtidos com sucesso',
-                        content: {
-                            'application/json': {
-                                schema: {
-                                    type: 'array',
-                                    items: { $ref: '#/components/schemas/Lista_Usuarios' },
-                                },
-                            },
-                        },
-                    },
-                },
+                    200: { description: 'Sucesso' }
+                }
             },
+
             post: {
-                tags: ['Usuarios'],
-                summary: 'Criar um novo usuário',
-                description: 'Endpoint para criar um novo usuário na base de dados',
+                tags: ['Usuários'],
+                summary: 'Criar usuário',
                 requestBody: {
                     required: true,
                     content: {
                         'application/json': {
-                            schema: { $ref: '#/components/schemas/Cadastro_Usuario' },
-                        },
-                    },
+                            schema: {
+                                $ref: '#/components/schemas/Cadastro_Usuarios'
+                            }
+                        }
+                    }
                 },
                 responses: {
-                    201: {
-                        description: 'Usuário criado com sucesso',
-                        content: {
-                            'application/json': {
-                                schema: { $ref: '#/components/schemas/Usuario_Criado' },
-                            },
-                        },
-                    },
-                },
-            },
+                    201: { description: 'Criado com sucesso' }
+                }
+            }
         },
-        '/usuarios/{id_usuario}': {
+
+        '/usuarios/{id}': {
             put: {
-                tags: ['Usuarios'],
-                summary: 'Atualizar um usuário existente',
+                tags: ['Usuários'],
+                summary: 'Atualizar usuário',
                 parameters: [
-                    { name: 'id_usuario', in: 'path', required: true, schema: { type: 'integer', example: 1 } },
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
                 ],
                 requestBody: {
                     required: true,
                     content: {
                         'application/json': {
-                            schema: { $ref: '#/components/schemas/Atualizacao_Usuario' },
-                        },
-                    },
+                            schema: {
+                                $ref: '#/components/schemas/Cadastro_Usuarios'
+                            }
+                        }
+                    }
                 },
                 responses: {
-                    200: { description: 'Usuário atualizado com sucesso' },
-                },
+                    200: { description: 'Atualizado' },
+                    404: { description: 'Não encontrado' }
+                }
             },
+
+            patch: {
+                tags: ['Usuários'],
+                summary: 'Atualizar parcialmente',
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Atualizacao_Parcial_Usuario'
+                            }
+                        }
+                    }
+                },
+                responses: {
+                    200: { description: 'Atualizado' }
+                }
+            },
+
+            delete: {
+                tags: ['Usuários'],
+                summary: 'Deletar usuário',
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
+                responses: {
+                    200: { description: 'Removido' },
+                    404: { description: 'Não encontrado' }
+                }
+            }
         },
+
+        // =========================
+        // DEPARTAMENTOS (NOVO 🔥)
+        // =========================
+
         '/departamentos': {
             get: {
                 tags: ['Departamentos'],
                 summary: 'Listar departamentos',
                 responses: {
-                    200: {
-                        description: 'Dados obtidos com sucesso',
-                        content: {
-                            'application/json': {
-                                schema: { type: 'array', items: { $ref: '#/components/schemas/Lista_Departamentos' } },
-                            },
-                        },
-                    },
-                },
+                    200: { description: 'Sucesso' }
+                }
             },
+
             post: {
                 tags: ['Departamentos'],
-                summary: 'Cadastrar novo departamento',
+                summary: 'Criar departamento',
                 requestBody: {
                     required: true,
                     content: {
                         'application/json': {
-                            schema: { $ref: '#/components/schemas/Cadastro_Departamento' },
-                        },
-                    },
+                            schema: {
+                                $ref: '#/components/schemas/Departamento'
+                            }
+                        }
+                    }
                 },
-                responses: { 201: { description: 'Departamento criado com sucesso' } },
-            },
+                responses: {
+                    201: { description: 'Criado com sucesso' },
+                    400: { description: 'Nome é obrigatório' }
+                }
+            }
         },
-        '/departamentos/{id_departamento}': {
+
+        '/departamentos/{id}': {
             put: {
                 tags: ['Departamentos'],
                 summary: 'Atualizar departamento',
-                parameters: [{ name: 'id_departamento', in: 'path', required: true, schema: { type: 'integer' } }],
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
                 requestBody: {
                     required: true,
-                    content: { 'application/json': { schema: { $ref: '#/components/schemas/Cadastro_Departamento' } } },
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Departamento'
+                            }
+                        }
+                    }
                 },
-                responses: { 200: { description: 'Departamento atualizado com sucesso' } },
-            },
-        },
-        '/ordens_servicos': {
-            get: {
-                tags: ['Ordens de Serviços'],
-                summary: 'Listar ordens de serviços',
                 responses: {
-                    200: {
-                        description: 'Dados obtidos com sucesso',
-                        content: {
-                            'application/json': {
-                                schema: { type: 'array', items: { $ref: '#/components/schemas/Lista_Ordens_Servicos' } },
-                            },
-                        },
-                    },
-                },
+                    200: { description: 'Atualizado' },
+                    404: { description: 'Departamento não encontrado' }
+                }
             },
+
+            delete: {
+                tags: ['Departamentos'],
+                summary: 'Deletar departamento',
+                parameters: [
+                    {
+                        name: 'id',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
+                responses: {
+                    200: { description: 'Removido' },
+                    404: { description: 'Departamento não encontrado' }
+                }
+            }
+        },
+
+        // =========================
+        // ORDEM DE SERVIÇOS
+        // =========================
+
+        '/ordem_servicos': {
+            get: {
+                tags: ['Ordem de Serviços'],
+                summary: 'Listar ordens de serviço',
+                responses: {
+                    200: { description: 'Sucesso' }
+                }
+            },
+
             post: {
-                tags: ['Ordens de Serviços'],
+                tags: ['Ordem de Serviços'],
                 summary: 'Criar ordem de serviço',
                 requestBody: {
                     required: true,
-                    content: { 'application/json': { schema: { $ref: '#/components/schemas/Cadastro_Ordem_Servico' } } },
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Ordem_Servico'
+                            }
+                        }
+                    }
                 },
-                responses: { 201: { description: 'Ordem criada com sucesso' } },
-            },
+                responses: {
+                    201: { description: 'Criado com sucesso' }
+                }
+            }
         },
-        '/ordens_servicos/{id_ordem}': {
+
+        '/ordem_servicos/{id_ordem}': {
             put: {
-                tags: ['Ordens de Serviços'],
+                tags: ['Ordem de Serviços'],
                 summary: 'Atualizar ordem de serviço',
-                parameters: [{ name: 'id_ordem', in: 'path', required: true, schema: { type: 'integer' } }],
+                parameters: [
+                    {
+                        name: 'id_ordem',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
                 requestBody: {
                     required: true,
-                    content: { 'application/json': { schema: { $ref: '#/components/schemas/Cadastro_Ordem_Servico' } } },
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Ordem_Servico'
+                            }
+                        }
+                    }
                 },
-                responses: { 200: { description: 'Ordem atualizada com sucesso' } },
+                responses: {
+                    200: { description: 'Atualizado' },
+                    404: { description: 'Não encontrado' }
+                }
             },
-        },
+
+            patch: {
+                tags: ['Ordem de Serviços'],
+                summary: 'Atualizar parcialmente ordem',
+                parameters: [
+                    {
+                        name: 'id_ordem',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                $ref: '#/components/schemas/Atualizacao_Parcial_Ordem'
+                            }
+                        }
+                    }
+                },
+                responses: {
+                    200: { description: 'Atualizado' }
+                }
+            },
+
+            delete: {
+                tags: ['Ordem de Serviços'],
+                summary: 'Deletar ordem de serviço',
+                parameters: [
+                    {
+                        name: 'id_ordem',
+                        in: 'path',
+                        required: true,
+                        schema: { type: 'integer' }
+                    }
+                ],
+                responses: {
+                    200: { description: 'Removido' },
+                    404: { description: 'Não encontrado' }
+                }
+            }
+        }
     },
+
     components: {
         schemas: {
-            Lista_Usuarios: { type: 'object', properties: { id: { type: 'integer' }, nome: { type: 'string' }, email: { type: 'string' } } },
-            Lista_Departamentos: { type: 'object', properties: { id: { type: 'integer' }, nome: { type: 'string' } } },
-            Lista_Ordens_Servicos: { type: 'object', properties: { numero_ordem: { type: 'integer' }, titulo: { type: 'string' } } },
-            Cadastro_Usuario: { type: 'object', required: ['nome', 'email', 'senha'], properties: { nome: { type: 'string' }, email: { type: 'string' }, senha: { type: 'string' } } },
-            Atualizacao_Usuario: { type: 'object', properties: { nome: { type: 'string' }, email: { type: 'string' }, senha: { type: 'string' } } },
-            Usuario_Criado: { type: 'object', properties: { id: { type: 'integer' }, nome: { type: 'string' } } },
-            Cadastro_Departamento: { type: 'object', required: ['nome'], properties: { nome: { type: 'string' }, descricao: { type: 'string' } } },
-            Cadastro_Ordem_Servico: { type: 'object', required: ['numero_ordem', 'titulo', 'id_usuario', 'id_departamento'], properties: { numero_ordem: { type: 'integer' }, titulo: { type: 'string' }, descricao: { type: 'string' }, prioridade: { type: 'string' }, status: { type: 'string' }, data: { type: 'string' }, id_usuario: { type: 'integer' }, id_departamento: { type: 'integer' } } }
-        },
-    },
+
+            Cadastro_Usuarios: {
+                type: 'object',
+                required: ['nome', 'email', 'senha'],
+                properties: {
+                    nome: { type: 'string' },
+                    email: { type: 'string' },
+                    senha: { type: 'string' }
+                }
+            },
+
+            Atualizacao_Parcial_Usuario: {
+                type: 'object',
+                properties: {
+                    nome: { type: 'string' },
+                    email: { type: 'string' },
+                    senha: { type: 'string' }
+                }
+            },
+
+            // 🔥 NOVO
+            Departamento: {
+                type: 'object',
+                required: ['nome'],
+                properties: {
+                    nome: { type: 'string' },
+                    descricao: { type: 'string' }
+                }
+            },
+
+            Ordem_Servico: {
+                type: 'object',
+                required: [
+                    'numero_ordem',
+                    'titulo',
+                    'descricao',
+                    'prioridade',
+                    'status',
+                    'data',
+                    'id_usuario',
+                    'id_departamento'
+                ],
+                properties: {
+                    numero_ordem: { type: 'integer' },
+                    titulo: { type: 'string' },
+                    descricao: { type: 'string' },
+                    prioridade: { type: 'string' },
+                    status: { type: 'string' },
+                    data: { type: 'string', format: 'date' },
+                    id_usuario: { type: 'integer' },
+                    id_departamento: { type: 'integer' }
+                }
+            },
+
+            Atualizacao_Parcial_Ordem: {
+                type: 'object',
+                properties: {
+                    numero_ordem: { type: 'integer' },
+                    titulo: { type: 'string' },
+                    descricao: { type: 'string' },
+                    prioridade: { type: 'string' },
+                    status: { type: 'string' },
+                    data: { type: 'string', format: 'date' },
+                    id_usuario: { type: 'integer' },
+                    id_departamento: { type: 'integer' }
+                }
+            }
+        }
+    }
 };
 
 export default documentacao;

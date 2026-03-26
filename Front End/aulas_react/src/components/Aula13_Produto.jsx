@@ -1,14 +1,18 @@
-const Aula11_Produto = ({ produto }) => {
+
+const Aula13_Produto = ({ produto, botaoExcluirProduto, botaoAlterar }) => {
+
+    if (!produto) return
     return (
         <div style={estilos.cardProduto}>
-            <img src={produto.linkImagem} alt="" style={estilos.imagem} />
+            <img src={produto.link_imagem} alt="" style={estilos.imagem} />
             <h2 style={estilos.titulo}>{produto.nome}</h2>
             <p style={estilos.preco}>R$ {Number(produto.preco).toFixed(2)} </p>
             <p>{produto.categoria}</p>
-            {/* if ternário */}
-            {/* { produto.freteGratis == true ? <p>Frete Grátis</p> : null } */}
             { produto.freteGratis == true && <p>Frete Grátis</p> }
             <a href={produto.linkProduto} style={estilos.botao}>Ver Produto</a>
+            <button style={estilos.botao} onClick={() => botaoExcluirProduto(produto.id_produto)} >Excluir</button>
+            <button style={estilos.botao} onClick={() => botaoAlterar(produto)} >Alterar</button>
+
         </div>
     )
 }
@@ -55,4 +59,4 @@ const estilos = {
     }
 };
 
-export default Aula11_Produto
+export default Aula13_Produto
